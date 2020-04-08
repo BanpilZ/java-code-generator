@@ -2,7 +2,9 @@ package ${package.Controller};
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
+import ${config.inputClassName}.${config.inputPackagePath};
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Controller;
 </#if>
 <#if superControllerClassPackage??>
 import ${superControllerClassPackage};
+import java.util.List;
+import com.evergrande.sp.framework.client.dto.ResponseDto;
+
 </#if>
 
 /**
@@ -38,5 +43,48 @@ public class ${table.controllerName} {
     @Autowired
     private ${table.serviceName} service;
 
+    @PostMapping("list")
+    public ResponseDto list(@RequestBody ${config.inputClassName} input,
+                            @RequestParam(defaultValue = 1) Integer currentPage,
+                            @RequestParam(defaultValue = 10) Integer pageSize) {
+        successResponseWithData(service.list(input, currentPage, pageSize));
+    }
+
+    @PostMapping("listAll")
+    public ResponseDto listAll(@RequestBody ${config.inputClassName} input) {
+        successResponseWithData(service.listAll(input));
+    }
+
+    @PostMapping("save")
+    public ResponseDto save(@RequestBody ${config.inputClassName} input) {
+        successResponseWithData(service.save(input));
+    }
+
+    @PostMapping("update")
+    public ResponseDto update(@RequestBody ${config.inputClassName} input) {
+        successResponseWithData(service.update(input));
+    }
+
+    @GetMapping("queryById")
+    public ResponseDto queryById(@RequestParam ${config.pkFieldType} ${config.pkFieldName}) {
+        successResponseWithData(service.queryById(id));
+    }
+
+    @GetMapping("deleteById")
+    public ResponseDto deleteById(@RequestParam ${config.pkFieldType} ${config.pkFieldName}) {
+        successResponseWithData(service.deleteById(id));
+    }
+
+    @PostMapping("batchDelete")
+    public ResponseDto batchDelete(@RequestBody List<${config.pkFieldType}> ${config.pkFieldName}s) {
+        successResponseWithData(service.batchDelete(ids));
+    }
+
+<#if superControllerClass??>
+    private ResponseDto successResponseWithData(Object data) {
+        return new ResponseDto(ResponseCode.SUCCESS.getCode(), data,
+                        environment.getProperty(ResponseCode.SUCCESS.getCode()), true);
+    }
+</if>
 }
 </#if>

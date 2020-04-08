@@ -1,9 +1,10 @@
 package com.banpil.tool.config;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 /**
  * @Author Banpil
@@ -14,19 +15,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("code-gen.common")
 public class CodeGeneratorConfig {
 
-    private String author = "banpil";
-
     private String moduleAbsPath;
 
     private String packageRelPath;
 
-    private String extFiles;
+    private List<ExtFileInfo> extFileInfos;
 
     private String tables;
 
     private String schemaName;
 
-    private boolean override = false;
+    private boolean override = true;
 
     private boolean swagger = false;
 
@@ -34,9 +33,13 @@ public class CodeGeneratorConfig {
 
     private boolean capitalModel = false;
 
-    private String dbType = "mysql";
+    private boolean serialVersionUID = false;
 
-    private String logicDeleteFieldName = "delete_flag";
+    private boolean generateMapper = false;
+
+    private String dbType;
+
+    private String logicDeleteFieldName;
 
     private String superEntityClass;
 
@@ -49,4 +52,14 @@ public class CodeGeneratorConfig {
     private String superMapperClass;
 
     private String[] superEntityColumns;
+
+    @Getter
+    @Setter
+    public class ExtFileInfo {
+
+        private String fileType;
+
+        private String packagePath;
+
+    }
 }
