@@ -3,6 +3,7 @@ package com.banpil.tool.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  **/
 @Getter
 @Setter
+@Component
 @ConfigurationProperties("code-gen.common")
 public class CodeGeneratorConfig {
 
@@ -25,7 +27,7 @@ public class CodeGeneratorConfig {
 
     private String schemaName;
 
-    private boolean override = true;
+    private String tablePrefix;
 
     private boolean swagger = false;
 
@@ -35,7 +37,9 @@ public class CodeGeneratorConfig {
 
     private boolean serialVersionUID = false;
 
-    private boolean generateMapper = false;
+    private boolean open = false;
+
+    private boolean entityTableFieldAnnotationEnable = false;
 
     private String dbType;
 
@@ -55,7 +59,7 @@ public class CodeGeneratorConfig {
 
     @Getter
     @Setter
-    public class ExtFileInfo {
+    public static class ExtFileInfo {
 
         private String fileType;
 

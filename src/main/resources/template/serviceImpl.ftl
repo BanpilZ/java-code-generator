@@ -5,7 +5,7 @@ import ${package.Service}.${table.serviceName};
 <#if superServiceImplClass??>
 import ${superServiceImplClassPackage};
 </if>
-import ${config.daoPackagePath}.${config.dapClassName};
+import ${cfg.daoPackagePath}.${cfg.dapClassName};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,47 +30,47 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 public class ${table.serviceImplName}<#if superServiceImplClass??>extends ${superServiceImplClass}</if> implements ${table.serviceName} {
 
     @Autowired
-    private ${config.daoClassName} dao;
+    private ${cfg.daoClassName} dao;
 
     @Override
-    public PageInfo<${config.outputClassName}> list(${config.inputClassName} input, Integer currentPage, Integer pageSize) {
+    public PageInfo<${cfg.outputClassName}> list(${cfg.inputClassName} input, Integer currentPage, Integer pageSize) {
         long count = dao.count(input);
-        List<${config.outputClassName}> pageList = dao.list(input, currentPage, pageSize);
+        List<${cfg.outputClassName}> pageList = dao.list(input, currentPage, pageSize);
         return new PageInfo<>(currentPage, pageSize, count, pageList);
     }
 
     @Override
-    public List<${config.outputClassName}> listAll(${config.inputClassName} input) {
+    public List<${cfg.outputClassName}> listAll(${cfg.inputClassName} input) {
         return dao.listAll(input);
     }
 
     @Override
     @Transactional
-    public int save(${config.inputClassName} input) {
+    public int save(${cfg.inputClassName} input) {
         return dao.save(input);
     }
 
     @Override
     @Transactional
-    public int update(${config.inputClassName} input) {
+    public int update(${cfg.inputClassName} input) {
         return dao.update(input);
     }
 
     @Override
-    public ${config.outputClassName} queryById(${config.pkFieldType} ${config.pkFieldName}) {
-        return dao.queryById(${config.pkFieldName});
+    public ${cfg.outputClassName} queryById(${cfg.pkFieldType} ${cfg.pkFieldName}) {
+        return dao.queryById(${cfg.pkFieldName});
     }
 
     @Override
     @Transactional
-    public int deleteById(${config.pkFieldType} ${config.pkFieldName}) {
-        return dao.deleteById(${config.pkFieldName});
+    public int deleteById(${cfg.pkFieldType} ${cfg.pkFieldName}) {
+        return dao.deleteById(${cfg.pkFieldName});
     }
 
     @Override
     @Transactional
-    public int batchDelete(List<${config.pkFieldType}> ${config.pkFieldName}s) {
-        return dao.batchDelete(${config.pkFieldName}s);
+    public int batchDelete(List<${cfg.pkFieldType}> ${cfg.pkFieldName}s) {
+        return dao.batchDelete(${cfg.pkFieldName}s);
     }
 }
 </#if>

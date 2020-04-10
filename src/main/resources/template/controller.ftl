@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
-import ${config.inputClassName}.${config.inputPackagePath};
+import ${cfg.inputClassName}.${cfg.inputPackagePath};
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
@@ -44,39 +44,39 @@ public class ${table.controllerName} {
     private ${table.serviceName} service;
 
     @PostMapping("list")
-    public ResponseDto list(@RequestBody ${config.inputClassName} input,
+    public ResponseDto list(@RequestBody ${cfg.inputClassName} input,
                             @RequestParam(defaultValue = 1) Integer currentPage,
                             @RequestParam(defaultValue = 10) Integer pageSize) {
         successResponseWithData(service.list(input, currentPage, pageSize));
     }
 
     @PostMapping("listAll")
-    public ResponseDto listAll(@RequestBody ${config.inputClassName} input) {
+    public ResponseDto listAll(@RequestBody ${cfg.inputClassName} input) {
         successResponseWithData(service.listAll(input));
     }
 
     @PostMapping("save")
-    public ResponseDto save(@RequestBody ${config.inputClassName} input) {
+    public ResponseDto save(@RequestBody ${cfg.inputClassName} input) {
         successResponseWithData(service.save(input));
     }
 
     @PostMapping("update")
-    public ResponseDto update(@RequestBody ${config.inputClassName} input) {
+    public ResponseDto update(@RequestBody ${cfg.inputClassName} input) {
         successResponseWithData(service.update(input));
     }
 
     @GetMapping("queryById")
-    public ResponseDto queryById(@RequestParam ${config.pkFieldType} ${config.pkFieldName}) {
+    public ResponseDto queryById(@RequestParam ${cfg.pkFieldType} ${cfg.pkFieldName}) {
         successResponseWithData(service.queryById(id));
     }
 
     @GetMapping("deleteById")
-    public ResponseDto deleteById(@RequestParam ${config.pkFieldType} ${config.pkFieldName}) {
+    public ResponseDto deleteById(@RequestParam ${cfg.pkFieldType} ${cfg.pkFieldName}) {
         successResponseWithData(service.deleteById(id));
     }
 
     @PostMapping("batchDelete")
-    public ResponseDto batchDelete(@RequestBody List<${config.pkFieldType}> ${config.pkFieldName}s) {
+    public ResponseDto batchDelete(@RequestBody List<${cfg.pkFieldType}> ${cfg.pkFieldName}s) {
         successResponseWithData(service.batchDelete(ids));
     }
 

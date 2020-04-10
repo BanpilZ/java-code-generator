@@ -1,7 +1,7 @@
 package ${package.Service};
 
-import ${config.inputClassName}.${config.inputPackagePath};
-import ${config.outputClassName}.${config.outputPackagePath};
+import ${cfg.inputClassName}.${cfg.inputPackagePath};
+import ${cfg.outputClassName}.${cfg.outputPackagePath};
 import com.evergrande.sp.framework.paging.PageInfo;
 import java.util.List;
 
@@ -15,17 +15,17 @@ import java.util.List;
  */
 public interface ${table.serviceName}<#if superServiceClass??> extends ${superServiceClass}</if> {
 
-    PageInfo<${config.outputClassName}> list(${config.inputClassName} input, Integer currentPage, Integer pageSize);
+    PageInfo<${cfg.outputClassName}> list(${cfg.inputClassName} input, Integer currentPage, Integer pageSize);
 
-    List<${config.outputClassName}> listAll(${config.inputClassName} input);
+    List<${cfg.outputClassName}> listAll(${cfg.inputClassName} input);
 
-    int save(${config.inputClassName} input);
+    int save(${cfg.inputClassName} input);
 
-    int update(${config.inputClassName} input);
+    int update(${cfg.inputClassName} input);
 
-    ${config.outputClassName} queryById(${config.pkFieldType} ${config.pkFieldName});
+    ${cfg.outputClassName} queryById(${cfg.pkFieldType} ${cfg.pkFieldName});
 
-    int deleteById(${config.pkFieldType} ${config.pkFieldName});
+    int deleteById(${cfg.pkFieldType} ${cfg.pkFieldName});
 
-    int batchDelete(List<${config.pkFieldType}> ${config.pkFieldName}s);
+    int batchDelete(List<${cfg.pkFieldType}> ${cfg.pkFieldName}s);
 }

@@ -14,11 +14,20 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.google.common.base.Joiner;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +37,14 @@ import java.util.Map;
  * @Author Banpil
  * @Date 2020-4-7 15:01
  **/
-public class CodeGenerator {
+@Component
+@Mojo(name = "generate", defaultPhase = LifecyclePhase.COMPILE)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class CodeGenerator extends AbstractMojo {
+
+    @Parameter(defaultValue = "false", property = "override")
+    private boolean override;
 
     @Autowired
     private CodeGeneratorConfig codeGeneratorConfig;
@@ -36,36 +52,34 @@ public class CodeGenerator {
     @Autowired
     private DataSourceProperties dataSourceProperties;
 
-    public void generateCode() throws IOException {
-
+    @Test
+    @Override
+    public void execute() throws MojoExecutionException {
         AutoGenerator autoGenerator = new AutoGenerator();
-
-        if (codeGeneratorConfig.isGenerateMapper()) {
-            // todo 和mybatis-generator合并
-
-        }
-
         String packagePath = codeGeneratorConfig.getModuleAbsPath() + File.separatorChar + codeGeneratorConfig.getPackageRelPath();
         String[] tables = codeGeneratorConfig.getTables().split(",");
 
         // 全局配置
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setActiveRecord(true)
+                .setOpen(codeGeneratorConfig.isOpen())
                 .setAuthor("Banpil")
                 .setOutputDir(packagePath)
 //                .setEnableCache(false)
 //                .setBaseColumnList(false)
                 .setIdType(IdType.AUTO)//主键类型
-                .setFileOverride(codeGeneratorConfig.isOverride())
-                .setEntityName("%")
-                .setMapperName("%Mapper")
-                .setXmlName("%Mapper")
+                .setFileOverride(override)
+                .setEntityName("%s")
+                .setMapperName("%sMapper")
+                .setXmlName("%sMapper")
                 .setServiceName("%sService")
                 .setServiceImplName("%sServiceImpl")
                 .setControllerName("%sController")
                 .setSwagger2(codeGeneratorConfig.isSwagger()) //是否使用Swagger
         ;
         autoGenerator.setGlobalConfig(globalConfig);
+        getLog().info("set global config...");
+
 
         // 数据库配置
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
@@ -76,6 +90,7 @@ public class CodeGenerator {
                 .setDriverName(dataSourceProperties.getDriverClassName())
                 .setSchemaName(codeGeneratorConfig.getSchemaName());
         autoGenerator.setDataSource(dataSourceConfig);
+        getLog().info("set dataSource config...");
 
         // 数据库策略配置
         StrategyConfig strategyConfig = new StrategyConfig();
@@ -85,6 +100,8 @@ public class CodeGenerator {
                 .setNaming(NamingStrategy.underline_to_camel)
                 .setColumnNaming(NamingStrategy.underline_to_camel)
                 .setInclude(tables)
+                .setTablePrefix(codeGeneratorConfig.getTablePrefix())
+                .setEntityTableFieldAnnotationEnable(codeGeneratorConfig.isEntityTableFieldAnnotationEnable())
                 .setEntityLombokModel(codeGeneratorConfig.isLombok()) //是否使用lombok
                 .setSuperControllerClass(codeGeneratorConfig.getSuperControllerClass())
                 .setSuperServiceClass(codeGeneratorConfig.getSuperServiceClass())
@@ -95,6 +112,7 @@ public class CodeGenerator {
                 .setEntitySerialVersionUID(codeGeneratorConfig.isSerialVersionUID())
                 ;
         autoGenerator.setStrategy(strategyConfig);
+        getLog().info("set strategy config...");
 
         // 模板配置
         TemplateConfig templateConfig = new TemplateConfig();
@@ -107,6 +125,7 @@ public class CodeGenerator {
         ;
         autoGenerator.setTemplate(templateConfig);
         autoGenerator.setTemplateEngine(new FreemarkerTemplateEngine());
+        getLog().info("set template config...");
 
         // 注入配置
         InjectionConfig injectionConfig = new InjectionConfig() {
@@ -130,6 +149,7 @@ public class CodeGenerator {
                 this.setMap(daoParams);
             }
         };
+        getLog().info("set injection config...");
 
         // 自定义文件生成
         List<CodeGeneratorConfig.ExtFileInfo> extFileInfos = codeGeneratorConfig.getExtFileInfos();
@@ -189,6 +209,7 @@ public class CodeGenerator {
             injectionConfig.setFileOutConfigList(foc);
         }
         autoGenerator.setCfg(injectionConfig);
+        getLog().info("set fileOut config...");
 
         // 包名配置
         PackageConfig packageConfig = new PackageConfig();
@@ -201,5 +222,9 @@ public class CodeGenerator {
                 .setEntity("mapper.entity")
         ;
         autoGenerator.setPackageInfo(packageConfig);
+        getLog().info("set package config...");
+
+        autoGenerator.execute();
+        getLog().info("execute done...");
     }
 }

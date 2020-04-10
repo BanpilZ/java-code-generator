@@ -1,4 +1,4 @@
-package ${config.extMapperPackagePath};
+package ${cfg.extMapperPackagePath};
 
 /**
  * <p>
@@ -8,7 +8,7 @@ package ${config.extMapperPackagePath};
  * @author ${author}
  * @since ${date}
  */
-public interface ${config.extMapperClassName} {
+public interface ${cfg.extMapperClassName} {
 
 }
 </#if>
