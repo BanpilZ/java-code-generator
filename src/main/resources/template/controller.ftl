@@ -85,6 +85,6 @@ public class ${table.controllerName} {
         return new ResponseDto(ResponseCode.SUCCESS.getCode(), data,
                         environment.getProperty(ResponseCode.SUCCESS.getCode()), true);
     }
-</if>
+</#if>
 }
 </#if>

@@ -114,19 +114,6 @@ public class CodeGenerator extends AbstractMojo {
         autoGenerator.setStrategy(strategyConfig);
         getLog().info("set strategy config...");
 
-        // 模板配置
-        TemplateConfig templateConfig = new TemplateConfig();
-        templateConfig.setController("template/controller.ftl")
-                .setService("template/service.ftl")
-                .setServiceImpl("template/serviceImpl.ftl")
-//                .setXml("template/extmapper.xml.ftl")
-//                .setMapper("template/extmapper.ftl")
-//                .setEntity("template/entity.ftl")
-        ;
-        autoGenerator.setTemplate(templateConfig);
-        autoGenerator.setTemplateEngine(new FreemarkerTemplateEngine());
-        getLog().info("set template config...");
-
         // 注入配置
         InjectionConfig injectionConfig = new InjectionConfig() {
             @Override
@@ -213,18 +200,34 @@ public class CodeGenerator extends AbstractMojo {
 
         // 包名配置
         PackageConfig packageConfig = new PackageConfig();
-        packageConfig.setParent(packagePath)
+        packageConfig.setParent("")
                 .setController("controller")
                 .setService("service")
                 .setServiceImpl("service.impl")
-                .setMapper("mapper")
-                .setXml("mapper")
-                .setEntity("mapper.entity")
+//                .setMapper("mapper")
+//                .setXml("mapper")
+//                .setEntity("mapper.entity")
         ;
         autoGenerator.setPackageInfo(packageConfig);
         getLog().info("set package config...");
 
+        autoGenerator.setTemplateEngine(new FreemarkerTemplateEngine());
         autoGenerator.execute();
-        getLog().info("execute done...");
+        getLog().info("generate extFiles end...");
+
+        // 模板配置
+        TemplateConfig templateConfig = new TemplateConfig();
+        templateConfig.setController("template/controller")
+                .setService("template/service")
+                .setServiceImpl("template/serviceImpl")
+//                .setXml("template/extmapper.xml")
+//                .setMapper("template/extmapper")
+//                .setEntity("template/entity")
+        ;
+        autoGenerator.setTemplate(templateConfig);
+        getLog().info("set template config...");
+
+        autoGenerator.execute();
+        getLog().info("generate package end...");
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @author ${author}
  * @since ${date}
  */
-public interface ${table.serviceName}<#if superServiceClass??> extends ${superServiceClass}</if> {
+public interface ${table.serviceName}<#if superServiceClass??> extends ${superServiceClass}</#if> {
 
     PageInfo<${cfg.outputClassName}> list(${cfg.inputClassName} input, Integer currentPage, Integer pageSize);
 

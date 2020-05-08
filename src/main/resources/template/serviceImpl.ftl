@@ -4,8 +4,8 @@ import ${package.Entity}.${entity};
 import ${package.Service}.${table.serviceName};
 <#if superServiceImplClass??>
 import ${superServiceImplClassPackage};
-</if>
-import ${cfg.daoPackagePath}.${cfg.dapClassName};
+</#if>
+import ${cfg.daoPackagePath}.${cfg.daoClassName};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 
 }
 <#else>
-public class ${table.serviceImplName}<#if superServiceImplClass??>extends ${superServiceImplClass}</if> implements ${table.serviceName} {
+public class ${table.serviceImplName}<#if superServiceImplClass??>extends ${superServiceImplClass}</#if> implements ${table.serviceName} {
 
     @Autowired
     private ${cfg.daoClassName} dao;
