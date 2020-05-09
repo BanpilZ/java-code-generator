@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
-import ${cfg.inputClassName}.${cfg.inputPackagePath};
+import ${entity}Input.${cfg.inputPackagePath};
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
@@ -44,24 +44,24 @@ public class ${table.controllerName} {
     private ${table.serviceName} service;
 
     @PostMapping("list")
-    public ResponseDto list(@RequestBody ${cfg.inputClassName} input,
+    public ResponseDto list(@RequestBody ${entity}Input input,
                             @RequestParam(defaultValue = 1) Integer currentPage,
                             @RequestParam(defaultValue = 10) Integer pageSize) {
         successResponseWithData(service.list(input, currentPage, pageSize));
     }
 
     @PostMapping("listAll")
-    public ResponseDto listAll(@RequestBody ${cfg.inputClassName} input) {
+    public ResponseDto listAll(@RequestBody ${entity}Input input) {
         successResponseWithData(service.listAll(input));
     }
 
     @PostMapping("save")
-    public ResponseDto save(@RequestBody ${cfg.inputClassName} input) {
+    public ResponseDto save(@RequestBody ${entity}Input input) {
         successResponseWithData(service.save(input));
     }
 
     @PostMapping("update")
-    public ResponseDto update(@RequestBody ${cfg.inputClassName} input) {
+    public ResponseDto update(@RequestBody ${entity}Input input) {
         successResponseWithData(service.update(input));
     }
 

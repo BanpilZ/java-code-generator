@@ -1,7 +1,7 @@
 package ${package.Service};
 
-import ${cfg.inputClassName}.${cfg.inputPackagePath};
-import ${cfg.outputClassName}.${cfg.outputPackagePath};
+import ${entity}Input.${cfg.inputPackagePath};
+import ${entity}Output.${cfg.outputPackagePath};
 import com.evergrande.sp.framework.paging.PageInfo;
 import java.util.List;
 
@@ -13,17 +13,17 @@ import java.util.List;
  * @author ${author}
  * @since ${date}
  */
-public interface ${table.serviceName}<#if superServiceClass??> extends ${superServiceClass}</#if> {
+public interface ${table.serviceName} {
 
-    PageInfo<${cfg.outputClassName}> list(${cfg.inputClassName} input, Integer currentPage, Integer pageSize);
+    PageInfo<${entity}Output> list(${entity}Input input, Integer currentPage, Integer pageSize);
 
-    List<${cfg.outputClassName}> listAll(${cfg.inputClassName} input);
+    List<${entity}Output> listAll(${entity}Input input);
 
-    int save(${cfg.inputClassName} input);
+    int save(${entity}Input input);
 
-    int update(${cfg.inputClassName} input);
+    int update(${entity}Input input);
 
-    ${cfg.outputClassName} queryById(${cfg.pkFieldType} ${cfg.pkFieldName});
+    ${entity}Output queryById(${cfg.pkFieldType} ${cfg.pkFieldName});
 
     int deleteById(${cfg.pkFieldType} ${cfg.pkFieldName});
 

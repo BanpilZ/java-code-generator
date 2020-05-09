@@ -1,12 +1,10 @@
-package ${package.Entity};
+package ${cfg.outputPackagePath};
 
 <#list table.importPackages as pkg>
+    <#if !pkg?contains("baomidou") && !pkg?contains("Serializable")>
 import ${pkg};
+    </#if>
 </#list>
-<#if swagger2>
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-</#if>
 <#if entityLombokModel>
 import lombok.*;
 </#if>
@@ -30,18 +28,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 </#if>
-<#if table.convert>
-@TableName("${table.name}")
-</#if>
-<#if swagger2>
-@ApiModel(value="${entity}对象", description="${table.comment!}")
-</#if>
 <#if superEntityClass??>
-public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
+public class ${entity}Output extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
 <#elseif activeRecord>
-public class ${entity} extends Model<${entity}> {
+public class ${entity}Output extends Model<${entity}> {
 <#else>
-public class ${entity} implements Serializable {
+public class ${entity}Output<#if entitySerialVersionUID> implements Serializable</#if> {
 </#if>
 <#if entitySerialVersionUID>
     private static final long serialVersionUID = 1L;
@@ -59,45 +51,11 @@ public class ${entity} implements Serializable {
     </#if>
 
     <#if field.comment!?length gt 0>
-        <#if swagger2>
     /**
      * ${field.comment}
      */
-    @ApiModelProperty(value = "${field.comment}")
-        <#else>
-    /**
-     * ${field.comment}
-     */
-        </#if>
     </#if>
-    <#if field.keyFlag>
-        <#-- 主键 -->
-        <#if field.keyIdentityFlag>
-    @TableId(value = "${field.name}", type = IdType.AUTO)
-        <#elseif idType??>
-    @TableId(value = "${field.name}", type = IdType.${idType})
-        <#elseif field.convert>
-    @TableId("${field.name}")
-        </#if>
-        <#-- 普通字段 -->
-    <#elseif field.fill??>
     <#-- -----   存在字段填充设置   ----->
-        <#if field.convert>
-    @TableField(value = "${field.name}", fill = FieldFill.${field.fill})
-        <#else>
-    @TableField(fill = FieldFill.${field.fill})
-        </#if>
-    <#elseif field.convert>
-    @TableField("${field.name}")
-    </#if>
-    <#-- 乐观锁注解 -->
-    <#if (versionFieldName!"") == field.name>
-    @Version
-    </#if>
-    <#-- 逻辑删除注解 -->
-    <#if (logicDeleteFieldName!"") == field.name>
-    @TableLogic
-    </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>
 <#------------  END 字段循环遍历  ---------->
@@ -114,7 +72,7 @@ public class ${entity} implements Serializable {
     }
 
     <#if entityBuilderModel>
-    public ${entity} set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+    public ${entity}Output set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     <#else>
     public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
     </#if>
@@ -123,6 +81,7 @@ public class ${entity} implements Serializable {
         return this;
         </#if>
     }
+
     </#list>
 </#if>
 <#if activeRecord>
@@ -139,7 +98,7 @@ public class ${entity} implements Serializable {
 <#if !entityLombokModel>
     @Override
     public String toString() {
-        return "${entity}{" +
+        return "${entity}Output{" +
     <#list table.fields as field>
         <#if field_index==0>
             "${field.propertyName}=" + ${field.propertyName} +

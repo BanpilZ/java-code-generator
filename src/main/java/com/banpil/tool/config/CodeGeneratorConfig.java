@@ -17,9 +17,11 @@ import java.util.List;
 @ConfigurationProperties("code-gen.common")
 public class CodeGeneratorConfig {
 
-    private String moduleAbsPath;
+    private String projectPath;
 
     private String packageRelPath;
+
+    private String author = "Banpil";
 
     private List<ExtFileInfo> extFileInfos;
 
@@ -40,6 +42,10 @@ public class CodeGeneratorConfig {
     private boolean open = false;
 
     private boolean entityTableFieldAnnotationEnable = false;
+
+    private boolean override = false;
+
+    private boolean activeRecord = false;
 
     private String dbType;
 
@@ -63,7 +69,9 @@ public class CodeGeneratorConfig {
 
         private String fileType;
 
-        private String packagePath;
+        private String projectPath;
+
+        private String packageRelPath;
 
     }
 }

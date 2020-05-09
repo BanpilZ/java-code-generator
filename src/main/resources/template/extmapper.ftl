@@ -8,7 +8,6 @@ package ${cfg.extMapperPackagePath};
  * @author ${author}
  * @since ${date}
  */
-public interface ${cfg.extMapperClassName} {
+public interface ${entity}ExtMapper {
 
 }
-</#if>

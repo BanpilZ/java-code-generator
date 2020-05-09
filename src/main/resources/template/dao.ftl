@@ -20,12 +20,12 @@ import org.springframework.beans.BeanUtils;
  * @since ${date}
  */
 @Repository
-public class ${cfg.daoClassName} extends BaseDao<${table.mapperName}, ${cfg.extMapperClassName}, ${entity}> {
+public class ${entity}Dao extends BaseDao<${table.mapperName}, ${entity}ExtMapper, ${entity}> {
 
     @Override
     protected void setMapperClass() {
         super.setMapperClass(${table.mapperName}.class);
-        super.setExtMapperClass(${cfg.extMapperClassName}.class);
+        super.setExtMapperClass(${entity}ExtMapper.class);
     }
 
     @Override
@@ -33,43 +33,43 @@ public class ${cfg.daoClassName} extends BaseDao<${table.mapperName}, ${cfg.extM
         super.setEntityClass(${entity}.class);
     }
 
-    public long count(${cfg.inputClassName} input) {
+    public long count(${entity}Input input) {
         return getMapper().count(input2Example(input));
     }
 
-    public List<${cfg.outputClassName}> list(${cfg.inputClassName} input, Integer currentPage, Integer pageSize) {
+    public List<${entity}Output> list(${entity}Input input, Integer currentPage, Integer pageSize) {
         List<${entity}> entityList = getMapper().selectByExampleWithRowbounds(input2Example(input),
             new RowBounds((currentPage - 1) * pageSize, pageSize));
         return entityList.stream().map(entity -> {
-            ${cfg.outputClassName} output = new ${cfg.outputClassName}();
+            ${entity}Output output = new ${entity}Output();
             BeanUtils.copyProperties(entity, output);
             return output;
         }).collect(Collectors.toList();
     }
 
-    public List<${cfg.outputClassName}> listAll(${cfg.inputClassName} input) {
+    public List<${entity}Output> listAll(${entity}Input input) {
         List<${entity}> entityList = getMapper().selectByExample(input2Example(input));
         return entityList.stream().map(entity -> {
-            ${cfg.outputClassName} output = new ${cfg.outputClassName}();
+            ${entity}Output output = new ${entity}Output();
             BeanUtils.copyProperties(entity, output);
             return output;
         }).collect(Collectors.toList();
     }
 
-    public int save(${cfg.inputClassName} input) {
+    public int save(${entity}Input input) {
         ${entity} entity = new ${entity}();
         BeanUtils.copyProperties(input, entity);
         return getMapper().insert(entity);
     }
 
-    public int update(${cfg.inputClassName} input) {
+    public int update(${entity}Input input) {
         ${entity} entity = new ${entity}();
         BeanUtils.copyProperties(input, entity);
         return getMapper().updateByPrimaryKeySelective(entity);
     }
 
-    public ${cfg.outputClassName} queryById(${cfg.pkFieldType} ${cfg.pkFieldName}) {
-        ${cfg.outputClassName} output = new ${cfg.outputClassName}();
+    public ${entity}Output queryById(${cfg.pkFieldType} ${cfg.pkFieldName}) {
+        ${entity}Output output = new ${entity}Output();
         BeanUtils.copyProperties(getMapper().selectByPrimaryKey(${cfg.pkFieldName}), output);
         return output;
     }
@@ -98,7 +98,7 @@ public class ${cfg.daoClassName} extends BaseDao<${table.mapperName}, ${cfg.extM
     </#if>
     }
 
-    private ${entity}Example input2Example(${cfg.inputClassName} input) {
+    private ${entity}Example input2Example(${entity}Input input) {
         ${entity}Example example = new ${entity}Example();
         ${entity}Example.Criteria criteria = example.createCriteria();
 <#list table.fields as field>

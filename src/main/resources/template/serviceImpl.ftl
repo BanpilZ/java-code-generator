@@ -5,7 +5,7 @@ import ${package.Service}.${table.serviceName};
 <#if superServiceImplClass??>
 import ${superServiceImplClassPackage};
 </#if>
-import ${cfg.daoPackagePath}.${cfg.daoClassName};
+import ${cfg.daoPackagePath}.${entity}Dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,34 +30,34 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 public class ${table.serviceImplName}<#if superServiceImplClass??>extends ${superServiceImplClass}</#if> implements ${table.serviceName} {
 
     @Autowired
-    private ${cfg.daoClassName} dao;
+    private ${entity}Dao dao;
 
     @Override
-    public PageInfo<${cfg.outputClassName}> list(${cfg.inputClassName} input, Integer currentPage, Integer pageSize) {
+    public PageInfo<${entity}Output> list(${entity}Input input, Integer currentPage, Integer pageSize) {
         long count = dao.count(input);
-        List<${cfg.outputClassName}> pageList = dao.list(input, currentPage, pageSize);
+        List<${entity}Output> pageList = dao.list(input, currentPage, pageSize);
         return new PageInfo<>(currentPage, pageSize, count, pageList);
     }
 
     @Override
-    public List<${cfg.outputClassName}> listAll(${cfg.inputClassName} input) {
+    public List<${entity}Output> listAll(${entity}Input input) {
         return dao.listAll(input);
     }
 
     @Override
     @Transactional
-    public int save(${cfg.inputClassName} input) {
+    public int save(${entity}Input input) {
         return dao.save(input);
     }
 
     @Override
     @Transactional
-    public int update(${cfg.inputClassName} input) {
+    public int update(${entity}Input input) {
         return dao.update(input);
     }
 
     @Override
-    public ${cfg.outputClassName} queryById(${cfg.pkFieldType} ${cfg.pkFieldName}) {
+    public ${entity}Output queryById(${cfg.pkFieldType} ${cfg.pkFieldName}) {
         return dao.queryById(${cfg.pkFieldName});
     }
 
