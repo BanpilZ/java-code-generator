@@ -195,7 +195,7 @@ public class CodeGenerator extends AbstractMojo {
                 .setServiceImpl("service.impl")
 //                .setMapper("mapper")
 //                .setXml("mapper")
-//                .setEntity("mapper.entity")
+                .setEntity("mapper.entity")
         ;
         autoGenerator.setPackageInfo(packageConfig);
         getLog().info("set package config...");

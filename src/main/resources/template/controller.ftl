@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
-import ${entity}Input.${cfg.inputPackagePath};
+import ${cfg.inputPackagePath}.${entity}Input;
+import java.util.List;
+import com.evergrande.sp.framework.client.dto.ResponseDto;
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
@@ -12,9 +14,6 @@ import org.springframework.stereotype.Controller;
 </#if>
 <#if superControllerClassPackage??>
 import ${superControllerClassPackage};
-import java.util.List;
-import com.evergrande.sp.framework.client.dto.ResponseDto;
-
 </#if>
 
 /**
@@ -45,46 +44,39 @@ public class ${table.controllerName} {
 
     @PostMapping("list")
     public ResponseDto list(@RequestBody ${entity}Input input,
-                            @RequestParam(defaultValue = 1) Integer currentPage,
-                            @RequestParam(defaultValue = 10) Integer pageSize) {
-        successResponseWithData(service.list(input, currentPage, pageSize));
+                            @RequestParam Integer currentPage,
+                            @RequestParam Integer pageSize) {
+        return successResponseWithData(service.list(input, currentPage, pageSize));
     }
 
     @PostMapping("listAll")
     public ResponseDto listAll(@RequestBody ${entity}Input input) {
-        successResponseWithData(service.listAll(input));
+        return successResponseWithData(service.listAll(input));
     }
 
     @PostMapping("save")
     public ResponseDto save(@RequestBody ${entity}Input input) {
-        successResponseWithData(service.save(input));
+        return successResponseWithData(service.save(input));
     }
 
     @PostMapping("update")
     public ResponseDto update(@RequestBody ${entity}Input input) {
-        successResponseWithData(service.update(input));
+        return successResponseWithData(service.update(input));
     }
 
     @GetMapping("queryById")
     public ResponseDto queryById(@RequestParam ${cfg.pkFieldType} ${cfg.pkFieldName}) {
-        successResponseWithData(service.queryById(id));
+        return successResponseWithData(service.queryById(${cfg.pkFieldName}));
     }
 
     @GetMapping("deleteById")
     public ResponseDto deleteById(@RequestParam ${cfg.pkFieldType} ${cfg.pkFieldName}) {
-        successResponseWithData(service.deleteById(id));
+        return successResponseWithData(service.deleteById(${cfg.pkFieldName}));
     }
 
     @PostMapping("batchDelete")
     public ResponseDto batchDelete(@RequestBody List<${cfg.pkFieldType}> ${cfg.pkFieldName}s) {
-        successResponseWithData(service.batchDelete(ids));
+        return successResponseWithData(service.batchDelete(${cfg.pkFieldName}s));
     }
-
-<#if superControllerClass??>
-    private ResponseDto successResponseWithData(Object data) {
-        return new ResponseDto(ResponseCode.SUCCESS.getCode(), data,
-                        environment.getProperty(ResponseCode.SUCCESS.getCode()), true);
-    }
-</#if>
 }
 </#if>

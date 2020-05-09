@@ -1,15 +1,12 @@
 package ${package.ServiceImpl};
 
-import ${package.Entity}.${entity};
+import ${cfg.inputPackagePath}.${entity}Input;
+import ${cfg.outputPackagePath}.${entity}Output;
 import ${package.Service}.${table.serviceName};
-<#if superServiceImplClass??>
-import ${superServiceImplClassPackage};
-</#if>
 import ${cfg.daoPackagePath}.${entity}Dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.BeanUtils;
 import java.util.List;
 import com.evergrande.sp.framework.paging.PageInfo;
 
@@ -27,7 +24,7 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 
 }
 <#else>
-public class ${table.serviceImplName}<#if superServiceImplClass??>extends ${superServiceImplClass}</#if> implements ${table.serviceName} {
+public class ${table.serviceImplName} implements ${table.serviceName} {
 
     @Autowired
     private ${entity}Dao dao;

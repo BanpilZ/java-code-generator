@@ -3,8 +3,11 @@ package ${cfg.daoPackagePath};
 import ${package.Entity}.${entity};
 import ${package.Entity}.${entity}Example;
 import ${package.Mapper}.${table.mapperName};
-import ${cfg.extMapperPackagePath};
-import org.springframework.beans.factory.annotation.Autowired;
+import ${cfg.extMapperPackagePath}.${entity}ExtMapper;
+import ${cfg.inputPackagePath}.${entity}Input;
+import ${cfg.outputPackagePath}.${entity}Output;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import com.evergrande.sp.framework.dao.base.BaseDao;
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +37,7 @@ public class ${entity}Dao extends BaseDao<${table.mapperName}, ${entity}ExtMappe
     }
 
     public long count(${entity}Input input) {
-        return getMapper().count(input2Example(input));
+        return getMapper().countByExample(input2Example(input));
     }
 
     public List<${entity}Output> list(${entity}Input input, Integer currentPage, Integer pageSize) {
@@ -44,7 +47,7 @@ public class ${entity}Dao extends BaseDao<${table.mapperName}, ${entity}ExtMappe
             ${entity}Output output = new ${entity}Output();
             BeanUtils.copyProperties(entity, output);
             return output;
-        }).collect(Collectors.toList();
+        }).collect(Collectors.toList());
     }
 
     public List<${entity}Output> listAll(${entity}Input input) {
@@ -53,7 +56,7 @@ public class ${entity}Dao extends BaseDao<${table.mapperName}, ${entity}ExtMappe
             ${entity}Output output = new ${entity}Output();
             BeanUtils.copyProperties(entity, output);
             return output;
-        }).collect(Collectors.toList();
+        }).collect(Collectors.toList());
     }
 
     public int save(${entity}Input input) {
@@ -78,7 +81,7 @@ public class ${entity}Dao extends BaseDao<${table.mapperName}, ${entity}ExtMappe
     <#if logicDeleteFieldName??>
         ${entity} entity = new ${entity}();
         entity.set${cfg.pkCapitalName}(${cfg.pkFieldName});
-        entity.set${cfg.logicDeleteCapitalName}(1);
+        entity.set${cfg.logicDeleteCapitalName}(true);
         return getMapper().updateByPrimaryKeySelective(entity);
     <#else>
         return getMapper().deleteByPrimaryKey(${cfg.pkFieldName});
@@ -91,7 +94,7 @@ public class ${entity}Dao extends BaseDao<${table.mapperName}, ${entity}ExtMappe
         criteria.and${cfg.pkCapitalName}In(${cfg.pkFieldName}s);
     <#if logicDeleteFieldName??>
         ${entity} entity = new ${entity}();
-        entity.set${cfg.logicDeleteCapitalName}(1);
+        entity.set${cfg.logicDeleteCapitalName}(true);
         return getMapper().updateByExampleSelective(entity, example);
     <#else>
         return getMapper().deleteByExample(example);

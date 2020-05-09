@@ -1,7 +1,7 @@
 package ${package.Service};
 
-import ${entity}Input.${cfg.inputPackagePath};
-import ${entity}Output.${cfg.outputPackagePath};
+import ${cfg.inputPackagePath}.${entity}Input;
+import ${cfg.outputPackagePath}.${entity}Output;
 import com.evergrande.sp.framework.paging.PageInfo;
 import java.util.List;
 
