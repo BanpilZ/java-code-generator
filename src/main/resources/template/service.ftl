@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface ${table.serviceName} {
 
-    PageInfo<${entity}Output> list(${entity}Input input, Integer currentPage, Integer pageSize);
+    PageInfo<${entity}Output> list(${entity}Input input);
 
     List<${entity}Output> listAll(${entity}Input input);
 

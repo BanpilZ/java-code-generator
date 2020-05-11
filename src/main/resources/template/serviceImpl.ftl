@@ -30,8 +30,10 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
     private ${entity}Dao dao;
 
     @Override
-    public PageInfo<${entity}Output> list(${entity}Input input, Integer currentPage, Integer pageSize) {
+    public PageInfo<${entity}Output> list(${entity}Input input) {
         long count = dao.count(input);
+        int currentPage = input.getCurrentPage();
+        int pageSize = input.getPageSize();
         List<${entity}Output> pageList = dao.list(input, currentPage, pageSize);
         return new PageInfo<>(currentPage, pageSize, count, pageList);
     }

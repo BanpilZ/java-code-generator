@@ -43,10 +43,8 @@ public class ${table.controllerName} {
     private ${table.serviceName} service;
 
     @PostMapping("list")
-    public ResponseDto list(@RequestBody ${entity}Input input,
-                            @RequestParam Integer currentPage,
-                            @RequestParam Integer pageSize) {
-        return successResponseWithData(service.list(input, currentPage, pageSize));
+    public ResponseDto list(@RequestBody ${entity}Input input) {
+        return successResponseWithData(service.list(input));
     }
 
     @PostMapping("listAll")
