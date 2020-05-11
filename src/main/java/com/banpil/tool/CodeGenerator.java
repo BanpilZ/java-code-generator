@@ -67,7 +67,7 @@ public class CodeGenerator extends AbstractMojo {
                 .setOutputDir(projectPath)
 //                .setEnableCache(false)
 //                .setBaseColumnList(false)
-                .setIdType(IdType.AUTO) //主键类型-自增
+                .setIdType(IdType.UUID) //主键类型-uuid
                 .setDateType(DateType.ONLY_DATE) //日期类型-java.util.Date
                 .setFileOverride(codeGeneratorConfig.isOverride()) // 是否覆盖
                 .setEntityName("%s")
@@ -99,7 +99,6 @@ public class CodeGenerator extends AbstractMojo {
                 .setLogicDeleteFieldName(codeGeneratorConfig.getLogicDeleteFieldName()) //逻辑删除标识位
                 .setNaming(NamingStrategy.underline_to_camel) //下划线转驼峰
                 .setInclude(tables)
-                .setTablePrefix(codeGeneratorConfig.getTablePrefix()) //表名前缀
                 .setEntityTableFieldAnnotationEnable(codeGeneratorConfig.isEntityTableFieldAnnotationEnable()) //是否生成字段注解
                 .setEntityLombokModel(codeGeneratorConfig.isLombok()) //是否使用lombok
                 .setSuperControllerClass(codeGeneratorConfig.getSuperControllerClass())
@@ -110,6 +109,9 @@ public class CodeGenerator extends AbstractMojo {
                 .setSuperEntityColumns(codeGeneratorConfig.getSuperEntityColumns())
                 .setEntitySerialVersionUID(codeGeneratorConfig.isSerialVersionUID()) //是否实现java.io.Serializable
                 ;
+        if (StringUtils.isNotEmpty(codeGeneratorConfig.getTablePrefix())) {
+            strategyConfig.setTablePrefix(codeGeneratorConfig.getTablePrefix()); //表名前缀
+        }
         autoGenerator.setStrategy(strategyConfig);
         getLog().info("set strategy config...");
 

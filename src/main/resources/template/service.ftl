@@ -2,7 +2,8 @@ package ${package.Service};
 
 import ${cfg.inputPackagePath}.${entity}Input;
 import ${cfg.outputPackagePath}.${entity}Output;
-import com.evergrande.sp.framework.paging.PageInfo;
+import ${package.Entity}.${entity};
+import com.eg.egsc.framework.paging.PageInfo;
 import java.util.List;
 
 /**
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public interface ${table.serviceName} {
 
-    PageInfo<${entity}Output> list(${entity}Input input);
+    PageInfo<${entity}Output> list(${entity}Input input, int currentPage, int pageSize);
 
-    List<${entity}Output> listAll(${entity}Input input);
+    List<${entity}> listAll(${entity}Input input);
 
     int save(${entity}Input input);
 

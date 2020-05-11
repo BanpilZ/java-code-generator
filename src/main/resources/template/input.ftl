@@ -1,6 +1,5 @@
 package ${cfg.inputPackagePath};
 
-import com.evergrande.sp.framework.client.dto.PageEntity;
 <#list table.importPackages as pkg>
     <#if !pkg?contains("baomidou") && !pkg?contains("Serializable")>
 import ${pkg};
@@ -34,7 +33,7 @@ public class ${entity}Input extends ${superEntityClass}<#if activeRecord><${enti
 <#elseif activeRecord>
 public class ${entity}Input extends Model<${entity}> {
 <#else>
-public class ${entity}Input extends PageEntity<#if entitySerialVersionUID> implements Serializable</#if> {
+public class ${entity}Input<#if entitySerialVersionUID> implements Serializable</#if> {
 </#if>
 <#if entitySerialVersionUID>
     private static final long serialVersionUID = 1L;

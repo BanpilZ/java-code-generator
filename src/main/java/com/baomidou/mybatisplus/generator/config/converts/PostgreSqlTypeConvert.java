@@ -10,53 +10,27 @@ import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
  * @Author Banpil
  * @Date 2020-5-9 17:57
  **/
-public class MySqlTypeConvert implements ITypeConvert {
+public class PostgreSqlTypeConvert implements ITypeConvert {
 
     @Override
     public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
         String t = fieldType.toLowerCase();
         if (t.contains("char")) {
             return DbColumnType.STRING;
-        } else if (t.contains("bigint")) {
+        } else if (t.contains("bigint")) { // int8
             return DbColumnType.LONG;
-        } else if (t.contains("tinyint(1)")) {
-            return DbColumnType.BOOLEAN;
-        } else if (t.contains("tinyint(4)")) {
-            return DbColumnType.BYTE;
-        } else if (t.contains("smallint")) {
+        } else if (t.contains("smallint")) { // int2
             return DbColumnType.SHORT;
-        } else if (t.contains("int")) {
+        } else if (t.contains("int")) { // int4
             return DbColumnType.INTEGER;
-        } else if (t.contains("text")) {
-            return DbColumnType.STRING;
-        } else if (t.contains("bit")) {
-            return DbColumnType.BOOLEAN;
-        } else if (t.contains("decimal")) {
-            return DbColumnType.BIG_DECIMAL;
-        } else if (t.contains("clob")) {
-            return DbColumnType.CLOB;
-        } else if (t.contains("blob")) {
-            return DbColumnType.BLOB;
-        } else if (t.contains("binary")) {
-            return DbColumnType.BYTE_ARRAY;
-        } else if (t.contains("float")) {
-            return DbColumnType.FLOAT;
-        } else if (t.contains("double")) {
-            return DbColumnType.DOUBLE;
-        } else if (t.contains("json") || t.contains("enum")) {
-            return DbColumnType.STRING;
-        } else if (t.contains("date") || t.contains("time") || t.contains("year")) {
+        } else if (t.contains("date") || t.contains("time")) {
             switch (globalConfig.getDateType()) {
-                case ONLY_DATE:
-                    return DbColumnType.DATE;
                 case SQL_PACK:
                     switch (t) {
                         case "date":
                             return DbColumnType.DATE_SQL;
                         case "time":
                             return DbColumnType.TIME;
-                        case "year":
-                            return DbColumnType.DATE_SQL;
                         default:
                             return DbColumnType.TIMESTAMP;
                     }
@@ -66,12 +40,32 @@ public class MySqlTypeConvert implements ITypeConvert {
                             return DbColumnType.LOCAL_DATE;
                         case "time":
                             return DbColumnType.LOCAL_TIME;
-                        case "year":
-                            return DbColumnType.YEAR;
                         default:
                             return DbColumnType.LOCAL_DATE_TIME;
                     }
+                default:
+                    return DbColumnType.DATE;
             }
+        } else if (t.contains("text")) {
+            return DbColumnType.STRING;
+        } else if (t.contains("bit")) {
+            return DbColumnType.BOOLEAN;
+        } else if (t.contains("decimal")) {
+            return DbColumnType.BIG_DECIMAL;
+        } else if (t.contains("clob")) {
+            return DbColumnType.CLOB;
+        } else if (t.contains("blob")) {
+            return DbColumnType.BYTE_ARRAY;
+        } else if (t.contains("float")) {
+            return DbColumnType.FLOAT;
+        } else if (t.contains("double")) {
+            return DbColumnType.DOUBLE;
+        } else if (t.contains("json") || t.contains("enum")) {
+            return DbColumnType.STRING;
+        } else if (t.contains("boolean")) {
+            return DbColumnType.BOOLEAN;
+        } else if (t.contains("numeric")) {
+            return DbColumnType.BIG_DECIMAL;
         }
         return DbColumnType.STRING;
     }

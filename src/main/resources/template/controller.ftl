@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
 import ${cfg.inputPackagePath}.${entity}Input;
 import java.util.List;
-import com.evergrande.sp.framework.client.dto.ResponseDto;
+import com.eg.egsc.framework.client.dto.ResponseDto;
+<#if !superControllerClass??>
+import com.eg.egsc.common.constant.CommonConstant;
+</#if>
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
 <#else>
@@ -43,8 +46,10 @@ public class ${table.controllerName} {
     private ${table.serviceName} service;
 
     @PostMapping("list")
-    public ResponseDto list(@RequestBody ${entity}Input input) {
-        return successResponseWithData(service.list(input));
+    public ResponseDto list(@RequestBody ${entity}Input input,
+                            @RequestParam(name = "currentPage", required = true) Integer currentPage,
+                            @RequestParam(name = "pageSize", required = true) Integer pageSize) {
+        return successResponseWithData(service.list(input, currentPage, pageSize));
     }
 
     @PostMapping("listAll")
@@ -76,5 +81,19 @@ public class ${table.controllerName} {
     public ResponseDto batchDelete(@RequestBody List<${cfg.pkFieldType}> ${cfg.pkFieldName}s) {
         return successResponseWithData(service.batchDelete(${cfg.pkFieldName}s));
     }
+    <#if !superControllerClass??>
+
+	private ResponseDto successResponse() {
+		return new ResponseDto(CommonConstant.SUCCESS_CODE, null, null);
+	}
+
+	private ResponseDto successResponseWithData(Object data) {
+		return new ResponseDto(CommonConstant.SUCCESS_CODE, data, null);
+	}
+
+	private ResponseDto getDefaultResponseDto() {
+		return new ResponseDto(CommonConstant.SUCCESS_CODE, null, null);
+	}
+    </#if>
 }
 </#if>
