@@ -54,20 +54,22 @@ public class CodeGenerator extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
         AutoGenerator autoGenerator = new AutoGenerator();
+        // 项目路径
         String projectPath = codeGeneratorConfig.getProjectPath();
+        // 要生成的表
         String[] tables = codeGeneratorConfig.getTables().split(",");
 
         // 全局配置
         GlobalConfig globalConfig = new GlobalConfig();
         globalConfig.setActiveRecord(codeGeneratorConfig.isActiveRecord())
-                .setOpen(codeGeneratorConfig.isOpen())
+                .setOpen(codeGeneratorConfig.isOpen()) // 执行完后是否打开目录
                 .setAuthor(codeGeneratorConfig.getAuthor())
                 .setOutputDir(projectPath)
 //                .setEnableCache(false)
 //                .setBaseColumnList(false)
-                .setIdType(IdType.AUTO)//主键类型
-                .setDateType(DateType.ONLY_DATE)
-                .setFileOverride(codeGeneratorConfig.isOverride())
+                .setIdType(IdType.AUTO) //主键类型-自增
+                .setDateType(DateType.ONLY_DATE) //日期类型-java.util.Date
+                .setFileOverride(codeGeneratorConfig.isOverride()) // 是否覆盖
                 .setEntityName("%s")
                 .setMapperName("%sMapper")
                 .setXmlName("%sMapper")
@@ -78,7 +80,6 @@ public class CodeGenerator extends AbstractMojo {
         ;
         autoGenerator.setGlobalConfig(globalConfig);
         getLog().info("set global config...");
-
 
         // 数据库配置
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
@@ -94,13 +95,12 @@ public class CodeGenerator extends AbstractMojo {
         // 数据库策略配置
         StrategyConfig strategyConfig = new StrategyConfig();
         strategyConfig.setRestControllerStyle(true)
-                .setCapitalMode(codeGeneratorConfig.isCapitalModel())
-                .setLogicDeleteFieldName(codeGeneratorConfig.getLogicDeleteFieldName())
-                .setNaming(NamingStrategy.underline_to_camel)
-                .setColumnNaming(NamingStrategy.underline_to_camel)
+                .setCapitalMode(codeGeneratorConfig.isCapitalModel()) //是否大写命名
+                .setLogicDeleteFieldName(codeGeneratorConfig.getLogicDeleteFieldName()) //逻辑删除标识位
+                .setNaming(NamingStrategy.underline_to_camel) //下划线转驼峰
                 .setInclude(tables)
-                .setTablePrefix(codeGeneratorConfig.getTablePrefix())
-                .setEntityTableFieldAnnotationEnable(codeGeneratorConfig.isEntityTableFieldAnnotationEnable())
+                .setTablePrefix(codeGeneratorConfig.getTablePrefix()) //表名前缀
+                .setEntityTableFieldAnnotationEnable(codeGeneratorConfig.isEntityTableFieldAnnotationEnable()) //是否生成字段注解
                 .setEntityLombokModel(codeGeneratorConfig.isLombok()) //是否使用lombok
                 .setSuperControllerClass(codeGeneratorConfig.getSuperControllerClass())
                 .setSuperServiceClass(codeGeneratorConfig.getSuperServiceClass())
@@ -108,7 +108,7 @@ public class CodeGenerator extends AbstractMojo {
                 .setSuperMapperClass(codeGeneratorConfig.getSuperMapperClass())
                 .setSuperEntityClass(codeGeneratorConfig.getSuperEntityClass())
                 .setSuperEntityColumns(codeGeneratorConfig.getSuperEntityColumns())
-                .setEntitySerialVersionUID(codeGeneratorConfig.isSerialVersionUID())
+                .setEntitySerialVersionUID(codeGeneratorConfig.isSerialVersionUID()) //是否实现java.io.Serializable
                 ;
         autoGenerator.setStrategy(strategyConfig);
         getLog().info("set strategy config...");
@@ -122,13 +122,13 @@ public class CodeGenerator extends AbstractMojo {
                 if (CollectionUtils.isNotEmpty(tableInfoList)) {
                     // 主键名称
                     tableInfoList.get(0).getFields().stream().filter(TableField::isKeyFlag).forEach(tableField -> {
-                        daoParams.put("pkColumnName", tableField.getName());
-                        daoParams.put("pkFieldName", tableField.getPropertyName());
-                        daoParams.put("pkCapitalName", StringUtils.capitalize(tableField.getPropertyName()));
-                        daoParams.put("pkFieldType", tableField.getPropertyType());
+                        daoParams.put("pkColumnName", tableField.getName()); //主键列名
+                        daoParams.put("pkFieldName", tableField.getPropertyName()); //主键字段名
+                        daoParams.put("pkCapitalName", StringUtils.capitalize(tableField.getPropertyName())); //主键字段名首字母大写
+                        daoParams.put("pkFieldType", tableField.getPropertyType()); //主键java类型
                     });
                 }
-                if (StringUtils.isNotEmpty(codeGeneratorConfig.getLogicDeleteFieldName())) {
+                if (StringUtils.isNotEmpty(codeGeneratorConfig.getLogicDeleteFieldName())) { // 逻辑删除标识位
                     daoParams.put("logicDeleteCapitalName", BStringUtil.db2CamelCapital(codeGeneratorConfig.getLogicDeleteFieldName()));
                 }
                 this.setMap(daoParams);
@@ -207,11 +207,12 @@ public class CodeGenerator extends AbstractMojo {
         templateConfig.setController("template/controller")
                 .setService("template/service")
                 .setServiceImpl("template/serviceImpl")
-                .setXml(null) // 不生成xml
+                .setXml(null) // 因为有默认值，设置成null表示不生成，下同
                 .setMapper(null)
                 .setEntity(null)
         ;
         autoGenerator.setTemplate(templateConfig);
+        // 模板引擎Freemarker
         autoGenerator.setTemplateEngine(new FreemarkerTemplateEngine());
         getLog().info("set template config...");
 
