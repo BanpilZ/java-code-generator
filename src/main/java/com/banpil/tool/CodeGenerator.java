@@ -128,7 +128,9 @@ public class CodeGenerator extends AbstractMojo {
                         daoParams.put("pkFieldType", tableField.getPropertyType());
                     });
                 }
-                daoParams.put("logicDeleteCapitalName", BStringUtil.db2CamelCapital(codeGeneratorConfig.getLogicDeleteFieldName()));
+                if (StringUtils.isNotEmpty(codeGeneratorConfig.getLogicDeleteFieldName())) {
+                    daoParams.put("logicDeleteCapitalName", BStringUtil.db2CamelCapital(codeGeneratorConfig.getLogicDeleteFieldName()));
+                }
                 this.setMap(daoParams);
             }
         };
