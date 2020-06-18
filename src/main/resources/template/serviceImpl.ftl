@@ -63,6 +63,9 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
         ${entity} entity = new ${entity}();
         BeanUtils.copyProperties(input, entity);
         entity.setUuid(sequenceServiceImpl.getUUID());
+        <#if logicDeleteFieldName??>
+            entity.set${cfg.logicDeleteCapitalName}((short) 1);
+        </#if>
         return dao.save(entity);
     }
 
