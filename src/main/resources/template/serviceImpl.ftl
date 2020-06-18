@@ -48,7 +48,7 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
                BeanUtils.copyProperties(entity, output);
                return output;
         }).collect(Collectors.toList());
-        PageInfo pageInfo = new PageInfo<>();
+        PageInfo<${entity}Output> pageInfo = new PageInfo<>();
         pageInfo.setCurrentPage(currentPage);
         pageInfo.setPageSize(pageSize);
         pageInfo.setTotal(total);
