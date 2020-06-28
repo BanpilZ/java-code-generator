@@ -40,6 +40,9 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
 
     @Override
     public PageInfo<${entity}Output> list(${entity}Input input, int currentPage, int pageSize) {
+        <#if logicDeleteFieldName??>
+            input.set${cfg.logicDeleteCapitalName}((short) 1);
+        </#if>
         ${entity}Criteria example = input2Example(input);
         long total = dao.count(example);
         List<${entity}Output> pageList = dao.list(example, currentPage, pageSize).stream()
@@ -53,6 +56,9 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
 
     @Override
     public List<${entity}> listAll(${entity}Input input) {
+            <#if logicDeleteFieldName??>
+                input.set${cfg.logicDeleteCapitalName}((short) 1);
+            </#if>
         ${entity}Criteria example = input2Example(input);
         return dao.listAll(example);
     }
