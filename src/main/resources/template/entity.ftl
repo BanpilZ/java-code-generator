@@ -36,9 +36,7 @@ import lombok.*;
 <#if swagger2>
 @ApiModel(value="${entity}对象", description="${table.comment!}")
 </#if>
-<#if superEntityClass??>
-public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
-<#elseif activeRecord>
+<#if activeRecord>
 public class ${entity} extends Model<${entity}> {
 <#else>
 public class ${entity} implements Serializable {

@@ -46,11 +46,17 @@ public class ${table.controllerName} {
     private ${table.serviceName} service;
 
     @PostMapping("list")
+<#if superEntityClass??>
+    public ResponseDto list(@RequestBody ${entity}Input input) {
+        return successResponseWithData(service.list(input));
+    }
+<#else>
     public ResponseDto list(@RequestBody ${entity}Input input,
                             @RequestParam(name = "currentPage", required = true) Integer currentPage,
                             @RequestParam(name = "pageSize", required = true) Integer pageSize) {
         return successResponseWithData(service.list(input, currentPage, pageSize));
     }
+</#if>
 
     @PostMapping("listAll")
     public ResponseDto listAll(@RequestBody ${entity}Input input) {

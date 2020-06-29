@@ -16,7 +16,11 @@ import java.util.List;
  */
 public interface ${table.serviceName} {
 
+<#if superEntityClass??>
+    PageInfo<${entity}Output> list(${entity}Input input);
+<#else>
     PageInfo<${entity}Output> list(${entity}Input input, int currentPage, int pageSize);
+</#if>
 
     List<${entity}> listAll(${entity}Input input);
 

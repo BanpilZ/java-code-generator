@@ -39,7 +39,13 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
     private SequenceService sequenceServiceImpl;
 
     @Override
+<#if superEntityClass??>
+    public PageInfo<${entity}Output> list(${entity}Input input) {
+        int currentPage = input.getCurrentPage();
+        int pageSize = input.getPageSize();
+<#else>
     public PageInfo<${entity}Output> list(${entity}Input input, int currentPage, int pageSize) {
+</#if>
         <#if logicDeleteFieldName??>
             input.set${cfg.logicDeleteCapitalName}((short) 1);
         </#if>

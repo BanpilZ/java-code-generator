@@ -5,6 +5,9 @@ package ${cfg.inputPackagePath};
 import ${pkg};
     </#if>
 </#list>
+<#if superEntityClassPackage??>
+import ${superEntityClassPackage};
+</#if>
 <#if entityLombokModel>
 import lombok.*;
 </#if>
