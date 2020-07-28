@@ -115,7 +115,7 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
         ${entity}Criteria.Criteria criteria = example.createCriteria();
 <#list table.fields as field>
     <#if field.propertyType == "String">
-        if (StringUtils.isNotBlank(input.get${field.capitalName}())) {
+        if (StringUtils.isNotEmpty(input.get${field.capitalName}())) {
             criteria.and${field.capitalName}EqualTo(input.get${field.capitalName}());
         }
     <#else>
