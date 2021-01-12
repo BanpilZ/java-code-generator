@@ -57,7 +57,7 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
                BeanUtils.copyProperties(entity, output);
                return output;
         }).collect(Collectors.toList());
-        return new PageInfo<>(currentPage, pageSize, total, rows);
+        return new PageInfo<>(currentPage, pageSize, total, pageList);
     }
 
     @Override
