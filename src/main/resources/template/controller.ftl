@@ -2,6 +2,7 @@ package ${package.Controller};
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ${package.Service}.${table.serviceName};
 import ${cfg.inputPackagePath}.${entity}Input;
@@ -64,12 +65,12 @@ public class ${table.controllerName} {
     }
 
     @PostMapping("save")
-    public ResponseDto save(@RequestBody ${entity}Input input) {
+    public ResponseDto save(@RequestBody @Validated ${entity}Input input) {
         return successResponseWithData(service.save(input));
     }
 
     @PostMapping("update")
-    public ResponseDto update(@RequestBody ${entity}Input input) {
+    public ResponseDto update(@RequestBody @Validated ${entity}Input input) {
         return successResponseWithData(service.update(input));
     }
 
